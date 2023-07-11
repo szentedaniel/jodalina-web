@@ -1,0 +1,29 @@
+---
+import * as dotenv from "dotenv";
+import Nav from '../pages/components/Nav'
+import Maintenance from '../pages/maintenance.astro'
+const {title} = Astro.props
+dotenv.config()
+
+const hasMaintenance: boolean = !!Number(process.env.MAINTENANCE) || false
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Masszázs...">
+    <meta title={hasMaintenance ? 'Karbantartás' : title} />
+    <title>{hasMaintenance ? 'Karbantartás' : title}</title>
+  </head>
+  <body class="light">
+    <main class="bg-white dark:bg-gray-900 dark:text-white">
+      {hasMaintenance && (
+        <Maintenance/>
+      )}
+      {!hasMaintenance && (
+        <Nav client:load />
+        <slot />
+      )}
+    </main>
+  </body>
+</html>
